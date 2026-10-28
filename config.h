@@ -19,10 +19,10 @@
 #define USE_TCP 1
 
 /* ---------- UART ---------- */
-#define UART_ID     0      /* UART port index (0 or 1 on BL602) */
+#define UART_ID     1      /* UART port index (0 or 1 on BL602) - UART 1 as sniffer */
 #define UART_BAUD   115200
 #define UART_TX_PIN 16     /* GPIO pin for UART TX */
-#define UART_RX_PIN 17     /* GPIO pin for UART RX */
+#define UART_RX_PIN 11     /* GPIO pin for UART RX - sniffer input */
 
 /* ---------- Buffer / timing ---------- */
 #define UART_RX_BUFFER_SIZE 1024
