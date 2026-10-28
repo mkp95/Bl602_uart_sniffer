@@ -15,13 +15,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Checkout BL602 SDK
-        uses: actions/checkout@v4
-        with:
-          repository: bouffalolab/bouffalo_sdk
-          path: bouffalo_sdk
-          ref: master
-
       - name: Install build dependencies
         run: |
           sudo apt-get update
@@ -37,15 +30,10 @@ jobs:
           echo "RISCV_TOOLCHAIN=$HOME/riscv/bin" >> $GITHUB_PATH
 
       - name: Configure CMake
-        env:
-          BL_SDK_BASE: ${{ github.workspace }}/bouffalo_sdk
-          CROSS_COMPILE: riscv-none-elf-
         run: |
-          cmake -S bl602_uart_wifi_fw -B build \
+          cmake -S . -B build \
             -G Ninja \
-            -DBL602_SDK_PATH=$PWD/bouffalo_sdk \
-            -DBL602_CHIP=bl602 \
-            -DBL602_BOARD=bl602evb
+            -DCROSS_COMPILE=riscv-none-elf-
 
       - name: Build firmware
         run: |

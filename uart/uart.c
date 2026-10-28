@@ -11,11 +11,10 @@
 
 #include <string.h>
 
-/* bouffalo_sdk headers — adjust paths to match your SDK layout */
-#include "bl_uart.h"
-#include "bl_irq.h"
-#include "hal_uart.h"
-#include "hal_gpio.h"
+/* SDK headers — using sdk_stubs.h for standalone compilation.
+ * Replace with real bouffalo_sdk headers (hal_uart.h, hal_gpio.h, bl_irq.h)
+ * for production builds targeting actual hardware. */
+#include "sdk_stubs.h"
 
 /* -------------------------------------------------------------------------- */
 /* Circular RX buffer                                                        */

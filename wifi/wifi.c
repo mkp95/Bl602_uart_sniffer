@@ -10,11 +10,10 @@
 
 #include <string.h>
 
-/* bouffalo_sdk headers — adjust paths to match your SDK layout */
-#include "wifi_mgmr.h"
-#include "wifi_mgmr_ext.h"
-#include "lwip/ip_addr.h"
-#include "lwip/netif.h"
+/* SDK headers — using sdk_stubs.h for standalone compilation.
+ * Replace with real bouffalo_sdk headers (wifi_mgmr.h, lwip/ip_addr.h, etc.)
+ * for production builds targeting actual hardware. */
+#include "sdk_stubs.h"
 
 /* -------------------------------------------------------------------------- */
 /* State                                                                     */

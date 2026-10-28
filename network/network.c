@@ -11,10 +11,9 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "lwip/sockets.h"
-#include "lwip/ip_addr.h"
-#include "lwip/netdb.h"
-#include "lwip/sys.h"
+/* lwIP headers — using sdk_stubs.h for standalone compilation.
+ * Replace with real bouffalo_sdk lwIP headers for production builds. */
+#include "sdk_stubs.h"
 
 /* -------------------------------------------------------------------------- */
 /* State                                                                     */

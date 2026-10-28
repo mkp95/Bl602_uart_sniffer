@@ -13,8 +13,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "FreeRTOS.h"
-#include "task.h"
+/* FreeRTOS headers — using sdk_stubs.h for standalone compilation.
+ * Replace with real FreeRTOS.h and task.h for production builds. */
+#include "sdk_stubs.h"
 
 /* Forwarding task stack size (words) */
 #define FWD_TASK_STACK_WORDS 1024
