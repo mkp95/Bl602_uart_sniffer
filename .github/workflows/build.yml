@@ -25,11 +25,16 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            cmake ninja-build gcc-riscv64-unknown-elf \
-            binutils-riscv64-unknown-elf \
-            libnewlib-riscv64-unknown-elf \
-            python3 python3-pip git wget curl
+          sudo apt-get install -y cmake ninja-build python3 python3-pip git wget curl unzip
+
+      - name: Install RISC-V toolchain
+        run: |
+          if [ ! -d "$HOME/riscv" ]; then
+            wget -q https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-2/xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz -O /tmp/riscv-gcc.tar.gz
+            mkdir -p $HOME/riscv
+            tar -xzf /tmp/riscv-gcc.tar.gz -C $HOME/riscv --strip-components=1
+          fi
+          echo "RISCV_TOOLCHAIN=$HOME/riscv/bin" >> $GITHUB_PATH
 
       - name: Configure CMake
         run: |
