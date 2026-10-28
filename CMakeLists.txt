@@ -24,9 +24,12 @@ endif()
 set(BL602_CHIP "bl602" CACHE STRING "BL602 chip name")
 set(BL602_BOARD "bl602evb" CACHE STRING "BL602 board name")
 
-# Toolchain file provided by the SDK
-set(CMAKE_TOOLCHAIN_FILE "${BL602_SDK_PATH}/cmake/toolchain/riscv-gcc.cmake"
-    CACHE FILEPATH "RISC-V GCC toolchain for BL602")
+# Toolchain file provided by the SDK (if it exists); otherwise CMake will
+# use the RISC-V compiler found on PATH (e.g. xpack riscv-none-elf-gcc).
+if(EXISTS "${BL602_SDK_PATH}/cmake/toolchain/riscv-gcc.cmake")
+    set(CMAKE_TOOLCHAIN_FILE "${BL602_SDK_PATH}/cmake/toolchain/riscv-gcc.cmake"
+        CACHE FILEPATH "RISC-V GCC toolchain for BL602")
+endif()
 
 # Include SDK build rules
 include("${BL602_SDK_PATH}/cmake/bouffalo_sdk.cmake")
