@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(bl602_uart_wifi_fw C ASM)
-
 # ---------------------------------------------------------------------------
 # BL602 UART-to-WiFi firmware
 # ---------------------------------------------------------------------------
@@ -10,11 +8,13 @@ project(bl602_uart_wifi_fw C ASM)
 #   BL602_SDK_PATH  : path to bouffalo_sdk (required)
 #   BL602_CHIP      : bl602 (default)
 #   BL602_BOARD     : bl602evb (default)
+#   CROSS_COMPILE   : riscv toolchain prefix (e.g. riscv-none-elf-)
 #
-# Example (inside the SDK build tree):
-#   cmake -DBL602_SDK_PATH=../bouffalo_sdk -DBL602_CHIP=bl602 \
-#         -DBL602_BOARD=bl602evb -G "Unix Makefiles" ..
-#   make
+# Example:
+#   export BL_SDK_BASE=$PWD/bouffalo_sdk
+#   export CROSS_COMPILE=riscv-none-elf-
+#   cmake -S bl602_uart_wifi_fw -B build -G Ninja
+#   cmake --build build
 # ---------------------------------------------------------------------------
 
 if(NOT DEFINED BL602_SDK_PATH)
@@ -24,29 +24,23 @@ endif()
 set(BL602_CHIP "bl602" CACHE STRING "BL602 chip name")
 set(BL602_BOARD "bl602evb" CACHE STRING "BL602 board name")
 
-# Toolchain file provided by the SDK (if it exists); otherwise CMake will
-# use the RISC-V compiler found on PATH (e.g. xpack riscv-none-elf-gcc).
-if(EXISTS "${BL602_SDK_PATH}/cmake/toolchain/riscv-gcc.cmake")
-    set(CMAKE_TOOLCHAIN_FILE "${BL602_SDK_PATH}/cmake/toolchain/riscv-gcc.cmake"
-        CACHE FILEPATH "RISC-V GCC toolchain for BL602")
-endif()
+# Export BL_SDK_BASE for the SDK config (it reads this env var)
+set(ENV{BL_SDK_BASE} "${BL602_SDK_PATH}")
 
-# Include SDK build rules
-include("${BL602_SDK_PATH}/cmake/bouffalo_sdk.cmake")
+# Include the SDK config which sets up toolchain, extension macros, and builds SDK
+include("${BL602_SDK_PATH}/cmake/bouffalo_sdk-config.cmake")
 
 # ---------------------------------------------------------------- components
+# Register each component as a static library using sdk_add_static_library
+
 add_subdirectory(main)
 add_subdirectory(uart)
 add_subdirectory(wifi)
 add_subdirectory(network)
 
 # ---------------------------------------------------------------- firmware
-bl602_add_firmware(
-    NAME bl602_uart_wifi_fw
-    CHIP ${BL602_CHIP}
-    BOARD ${BL602_BOARD}
-    LIBS main_app uart_mod wifi_mod net_mod
-)
+# The SDK's project() macro (overridden in extension.cmake) creates the final
+# ELF + BIN. It expects sdk_set_main_file() to have been called and libraries
+# registered via sdk_add_static_library().
 
-# Output artifacts: .bin (flashable) and .elf (debug)
-bl602_generate_bin(bl602_uart_wifi_fw)
+project(bl602_uart_wifi_fw C ASM)
