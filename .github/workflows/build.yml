@@ -27,7 +27,7 @@ jobs:
             mkdir -p $HOME/riscv
             tar -xzf /tmp/riscv-gcc.tar.gz -C $HOME/riscv --strip-components=1
           fi
-          echo "RISCV_TOOLCHAIN=$HOME/riscv/bin" >> $GITHUB_PATH
+          echo "$HOME/riscv/bin" >> $GITHUB_PATH
 
       - name: Configure CMake
         run: |
