@@ -37,8 +37,9 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
-# Compiler flags for BL602 (RISC-V, no standard library, etc.)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=rv32imac -mabi=ilp32 -Wall -Wextra -Os -ffunction-sections -fdata-sections -fno-builtin-printf -nostdinc -nostdlib -nodefaultlibs")
+# Compiler flags for BL602 (RISC-V, no standard library linking, but keep
+# standard headers for stdint.h/stddef.h etc.)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=rv32imac -mabi=ilp32 -Wall -Wextra -Os -ffunction-sections -fdata-sections -fno-builtin-printf -nostdlib -nodefaultlibs")
 
 # ---------------------------------------------------------------- includes
 include_directories(
